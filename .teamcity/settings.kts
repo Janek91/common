@@ -38,15 +38,22 @@ project {
             options = listOf("Debug" to "Debug", "Release" to "Release"),
             display = ParameterDisplay.NORMAL)
         text (
+            "env.IgnoreFailedSources",
+            label = "IgnoreFailedSources",
+            value = "False",
+            allowEmpty = true,
+            display = ParameterDisplay.NORMAL)
+        text (
             "env.Source",
             label = "Source",
+            description = "NuGet Source for Packages",
             value = "https://api.nuget.org/v3/index.json",
             allowEmpty = true,
             display = ParameterDisplay.NORMAL)
         text (
             "env.GitHubToken",
             label = "GitHubToken",
-            description = "GitHub token",
+            description = "GitHub Token",
             value = "",
             allowEmpty = true,
             display = ParameterDisplay.NORMAL)
@@ -124,6 +131,10 @@ object Test_P1T2 : BuildType({
         root(VcsRoot)
         cleanCheckout = true
     }
+    artifactRules = """
+        output/*.trx
+        output/*.xml
+    """.trimIndent()
     steps {
         powerShell {
             scriptMode = file { path = "build.ps1" }
@@ -144,6 +155,10 @@ object Test_P2T2 : BuildType({
         root(VcsRoot)
         cleanCheckout = true
     }
+    artifactRules = """
+        output/*.trx
+        output/*.xml
+    """.trimIndent()
     steps {
         powerShell {
             scriptMode = file { path = "build.ps1" }
@@ -165,6 +180,10 @@ object Test : BuildType({
         root(VcsRoot)
         showDependenciesChanges = true
     }
+    artifactRules = """
+        output/*.trx
+        output/*.xml
+    """.trimIndent()
     triggers {
         vcs {
             branchFilter = ""
@@ -210,21 +229,21 @@ object Publish : BuildType({
         text (
             "env.ApiKey",
             label = "ApiKey",
-            description = "ApiKey for the specified source",
+            description = "NuGet Api Key",
             value = "",
             allowEmpty = false,
             display = ParameterDisplay.PROMPT)
         text (
             "env.SlackWebhook",
             label = "SlackWebhook",
-            description = "Slack webhook",
+            description = "Slack Webhook",
             value = "",
             allowEmpty = false,
             display = ParameterDisplay.PROMPT)
         text (
             "env.GitterAuthToken",
             label = "GitterAuthToken",
-            description = "Gitter authtoken",
+            description = "Gitter Auth Token",
             value = "",
             allowEmpty = false,
             display = ParameterDisplay.PROMPT)
